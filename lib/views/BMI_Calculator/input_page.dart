@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:udemy_project/views/BMI_Calculator/result_page.dart';
+import 'package:udemy_project/widgets/bottom_card_content.dart';
 import 'package:udemy_project/widgets/coustom_container.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:udemy_project/widgets/icon_container.dart';
@@ -7,7 +9,10 @@ const double bottomContainerHeight = 70.0;
 const Color bottomContainerColour = Color(0xFFFF1555);
 const Color activeContainerColour = Color(0xFF1D1E33);
 const Color deactiveContainerColour = Color(0xFF111328);
-double sliderDefaultValue = 100.0;
+
+double sliderDefaultValue = 150.0;
+int defaultAge = 25;
+int defaultWeight = 88;
 
 enum GenderType {
   male,
@@ -160,66 +165,74 @@ class _InputPageState extends State<InputPage> {
                 child: CustomContainer(
                   onTapGesture: () {},
                   colour: activeContainerColour,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text(
-                        'WEIGHT',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        '83',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            child: Icon(FontAwesomeIcons.plus),
-                            height: 40.0,
-                            width: 40.0,
-                            decoration: BoxDecoration(
-                                color: Colors.grey, shape: BoxShape.circle
-                                // borderRadius: BorderRadius.circular(23.5),
-                                ),
-                          ),
-                          Container(
-                            child: Icon(FontAwesomeIcons.minus),
-                            decoration: BoxDecoration(
-                                color: Colors.grey, shape: BoxShape.circle),
-                            height: 40.0,
-                            width: 40.0,
-                          ),
-                        ],
-                      ),
-                    ],
+                  child: BottomCardContent(
+                    cardLabel: 'WEIGHT',
+                    cardValue: defaultWeight,
+                    onPressedMinus: () {
+                      setState(() {
+                        defaultWeight--;
+                      });
+                    },
+                    onPressedPlus: () {
+                      setState(() {
+                        defaultWeight++;
+                      });
+                    },
                   ),
                 ),
               ),
               Expanded(
                 child: GestureDetector(
                   child: CustomContainer(
-                      onTapGesture: () {}, colour: activeContainerColour),
+                    onTapGesture: () {},
+                    colour: activeContainerColour,
+                    child: BottomCardContent(
+                      cardLabel: 'AGE',
+                      cardValue: defaultAge,
+                      onPressedMinus: () {
+                        setState(() {
+                          defaultAge--;
+                        });
+                      },
+                      onPressedPlus: () {
+                        setState(() {
+                          defaultAge++;
+                        });
+                      },
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
         ),
-        Container(
-          width: double.infinity,
-          height: bottomContainerHeight,
-          margin: EdgeInsets.only(top: 15.0),
-          decoration: BoxDecoration(
-            color: bottomContainerColour,
-            borderRadius: BorderRadius.circular(10.0),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ResultHomePage(
+                          weight: defaultWeight,
+                          age: defaultAge,
+                          height: sliderDefaultValue,
+                        )));
+          },
+          child: Container(
+            width: double.infinity,
+            height: bottomContainerHeight,
+            margin: EdgeInsets.only(top: 15.0),
+            decoration: BoxDecoration(
+              color: bottomContainerColour,
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Text(
+              'CALCULATE',
+              style: TextStyle(
+                fontSize: 25.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            alignment: Alignment.center,
           ),
         ),
       ],
